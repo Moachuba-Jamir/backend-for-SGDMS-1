@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-var espData = {};
+
+var espIds =  [];
+
 // var esp1Readings = null;
 
 router.get("/", (req, res) => {
@@ -11,6 +13,7 @@ router.get("/", (req, res) => {
 
 // POST endpoint to send messages
 router.post("/", (req, res) => {
+    var espData = {};
     const { id, message } = req.body;
     // check if the Id already exists 
     if (espData[id]) {
