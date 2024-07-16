@@ -18,7 +18,7 @@ app.use(cors());
 
 // routes 
 app.use('/esp1', msgRouter);
-app.use('/adminRoute');
+app.use("/adminRoute", adminRouter);
 
 // Start the server
 app.listen(port, () => {
