@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-var espData = [];
+var espData = {};
 // var esp1Readings = null;
 
 router.get("/", (req, res) => {
