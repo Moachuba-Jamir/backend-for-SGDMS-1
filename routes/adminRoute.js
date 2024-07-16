@@ -1,28 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
+const espData = {};
 // var esp1Readings = null;
 
 router.get("/", (req, res) => {
   // Handle GET request to /messages
-  if (esp1Readings) {
-    res.json({
-      Binid: "01",
-      fillLevel: esp1Readings,
-    });
-  } else {
-    res.json({
-      message: "there are currently no data being sent from the Arduino",
-    });
-  }
+    res.json(espData);
 });
 
 // POST endpoint to send messages
 router.post("/", (req, res) => {
-  // Handle POST request to /messages
-  const { id } = req.body;
-  const { message } = req.body;
-  console.log("Received message:", message, id);
+    const { id, message } = req.body;
+    // check if the Id already exists 
+    if (espData[id]) {
+        espData[id].message = message;
+        console.log(`readings updated : ${espData[id]}`);
+    } else {
+        // add the new Id with the message
+        espData[id] = message;
+        console.log(`New esp added : ${id}`)
+    }
+  // Handle POST request to /admin Route
   res.json({ status: "recieved by the admin route" });
 });
 
