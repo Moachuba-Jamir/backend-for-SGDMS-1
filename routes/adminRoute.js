@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const espData = {};
+var espData = [];
 // var esp1Readings = null;
 
 router.get("/", (req, res) => {
@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
     } else {
         // add the new Id with the message
         espData[id] = message;
-        console.log(`New esp added : ${id}`)
+        console.log(`New esp added : ${id}`);
     }
   // Handle POST request to /admin Route
   res.json({ status: "recieved by the admin route" });
