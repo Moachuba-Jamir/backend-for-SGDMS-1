@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 // var esp1Readings = null;
-
-
 router.get("/", (req, res) => {
   // Handle GET request to /messages
   if (esp1Readings) {
@@ -18,11 +16,11 @@ router.get("/", (req, res) => {
 
 // POST endpoint to send messages
 router.post("/", (req, res) => {  
-  // Handle POST request to /messages
+  // Handle POST request to /esp1
   const { id } = req.body;
   const { message } = req.body;
-  console.log("Received message:", message, id);
-  res.json({ status: message});
+  console.log("From esp 1 :", message, id);
+  res.json({ status: "From esp1 recieved!"});
 });
 
 module.exports = router;

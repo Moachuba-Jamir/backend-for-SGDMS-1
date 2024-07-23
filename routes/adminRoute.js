@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-
 var espData = {};
-// var esp1Readings = null;
+
 
 // POST endpoint to send messages
 router.post("/", (req, res) => {
@@ -31,6 +30,5 @@ router.get("/", (req, res) => {
   // Handle GET request to /messages
   res.json(espData);
 });
-
 
 module.exports = router;
