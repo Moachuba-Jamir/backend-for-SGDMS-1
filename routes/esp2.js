@@ -22,8 +22,8 @@ router.post("/", (req, res) => {
   // Handle POST request to /messages
   const { id } = req.body;
   const { message } = req.body;
-  console.log("Received message:", message, id);
-  res.json({ status: message });
+  console.log("From esp 2 :", message, id);
+  res.json({ status: "From esp2 recieved!" });
 });
 
 module.exports = router;

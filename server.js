@@ -4,7 +4,8 @@ const app = express();
 const port = 3000; // You can change this to any port you prefer
 
 // Importing routes
-const msgRouter = require('./routes/esp1');
+const msgRouter1 = require('./routes/esp1');
+const msgRouter2 = require('./routes/esp2');
 const adminRouter = require('./routes/adminRoute');
 
 //default end point
@@ -17,7 +18,8 @@ app.use(express.json());
 app.use(cors());
 
 // routes 
-app.use('/esp1', msgRouter);
+app.use('/esp1', msgRouter1);
+app.use('/esp2', msgRouter2);
 app.use("/adminRoute", adminRouter);
 
 // Start the server
