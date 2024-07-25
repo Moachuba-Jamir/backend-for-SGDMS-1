@@ -5,16 +5,22 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   // Handle GET request to /messages
-  if (esp1Readings) {
-    res.json({
-      Binid: "01",
-      fillLevel: esp1Readings,
-    });
-  } else {
-    res.json({
-      message: "there are currently no data being sent from the Arduino",
-    });
-  }
+  // if (esp1Readings) {
+  //   res.json({
+  //     Binid: "01",
+  //     fillLevel: esp1Readings,
+  //   });
+  // } else {
+  //   res.json({
+  //     message: "there are currently no data being sent from the Arduino",
+  //   });
+  // }
+   res
+     .status(200)
+     .json({
+       message:
+         "This endpoint from esp2 will send back the esp readings with relative delay",
+     });
 });
 
 // POST endpoint to send messages
