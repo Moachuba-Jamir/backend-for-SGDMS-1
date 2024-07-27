@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
+const { getDB, connectToDb } = require("./db");
 const app = express();
-const port = 3000; // You can change this to any port you prefer
+const PORT = process.env.PORT || 3000;
 
 // Importing routes
 const msgRouter1 = require('./routes/esp1');
@@ -13,6 +15,17 @@ app.get("/", (req, res) => {
   res.json({ message: "Server is working fine! Hello from the server!" });
 });
 
+app.get("/bins", async (req, res) => {
+  // forEach cursor method
+//   let bins = [];
+//  db.collection('bins').find().forEach(element => {
+//  });
+  
+  // toArray method 
+  let bins = await db.collection('bins').find().toArray();
+  res.status(200).json(bins);
+});
+
 // Middleware to parse JSON body
 app.use(express.json());
 app.use(cors());
@@ -22,7 +35,18 @@ app.use('/esp1', msgRouter1);
 app.use('/esp2', msgRouter2);
 app.use("/adminRoute", adminRouter);
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+
+// for db connection 
+var db;
+connectToDb((err) => {
+  if (!err) {
+    // Start Listening if there's no db connection error
+    app.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`);
+    });
+    // the db instance for CRUD actions 
+    db = getDB();
+  }
 });
+
+
