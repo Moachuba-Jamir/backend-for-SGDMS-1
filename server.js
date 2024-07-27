@@ -15,17 +15,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Server is working fine! Hello from the server!" });
 });
 
-app.get("/bins", async (req, res) => {
-  // forEach cursor method
-//   let bins = [];
-//  db.collection('bins').find().forEach(element => {
-//  });
-  
-  // toArray method 
-  let bins = await db.collection('bins').find().toArray();
-  res.status(200).json(bins);
-});
-
 // Middleware to parse JSON body
 app.use(express.json());
 app.use(cors());
@@ -34,6 +23,16 @@ app.use(cors());
 app.use('/esp1', msgRouter1);
 app.use('/esp2', msgRouter2);
 app.use("/adminRoute", adminRouter);
+app.get("/bins", async (req, res) => {
+  // forEach cursor method
+  //   let bins = [];
+  //  db.collection('bins').find().forEach(element => {
+  //  });
+
+  // toArray method
+  let bins = await db.collection("bins").find().toArray();
+  res.status(200).json(bins);
+});
 
 
 // for db connection 
