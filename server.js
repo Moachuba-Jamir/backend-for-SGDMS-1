@@ -15,6 +15,7 @@ var locations = [];
 const msgRouter1 = require("./routes/esp1");
 const msgRouter2 = require("./routes/esp2");
 const adminRouter = require("./routes/adminRoute");
+const disConRouter = require("./routes/disconnect.js");
 
 //default end point
 app.get("/", (req, res) => {
@@ -29,6 +30,7 @@ app.use(cors());
 app.use("/esp1", msgRouter1);
 app.use("/esp2", msgRouter2);
 app.use("/adminRoute", adminRouter);
+app.use('/disconnect', disConRouter);
 // the bins endpoint for the dash board
 
 connectToDb((err) => {
