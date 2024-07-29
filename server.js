@@ -9,6 +9,7 @@ var db;
 
 // for storing bins data from mongo db
 var bins = [];
+var locations = [];
 
 // Importing routes
 const msgRouter1 = require("./routes/esp1");
@@ -47,10 +48,19 @@ connectToDb((err) => {
       .then(() => {
         console.log(bins);
       });
+    
+    
+    db.collection("locations").find().forEach((location) => {
+      locations.push(location);
+    })
   }
 });
 
 // send back the list of bins 
 app.get("/bins", (req, res) => {
   res.status(200).json(bins);
+});
+
+app.get("/locations", (req, res) => {
+  res.status(200).json(locations);
 });
