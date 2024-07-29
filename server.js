@@ -48,8 +48,7 @@ connectToDb((err) => {
       .then(() => {
         console.log(bins);
       });
-    
-    
+
     db.collection("locations").find().forEach((location) => {
       locations.push(location);
     })
