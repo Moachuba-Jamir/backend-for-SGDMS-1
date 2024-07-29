@@ -10,7 +10,6 @@ var db;
 // for storing bins data from mongo db
 var bins = [];
 
-
 // Importing routes
 const msgRouter1 = require("./routes/esp1");
 const msgRouter2 = require("./routes/esp2");
@@ -18,7 +17,7 @@ const adminRouter = require("./routes/adminRoute");
 
 //default end point
 app.get("/", (req, res) => {
-  res.json({ message: "Server is working fine! Hello from the server!" });
+  res.json({ message: "Backend server's default route is working fine " });
 });
 
 // Middleware to parse JSON body
@@ -39,17 +38,19 @@ connectToDb((err) => {
     });
     // the db instance for CRUD actions
     db = getDB();
-    db.collection('bins').find().forEach(bin => {
-      bins.push(bin);
-    }).then(() => {
-       console.log(bins);
-    }); 
- 
+    // querying the database to get the list of bins
+    db.collection("bins")
+      .find()
+      .forEach((bin) => {
+        bins.push(bin);
+      })
+      .then(() => {
+        console.log(bins);
+      });
   }
 });
 
-// creating an endpoint
+// send back the list of bins 
 app.get("/bins", (req, res) => {
   res.status(200).json(bins);
-
 });

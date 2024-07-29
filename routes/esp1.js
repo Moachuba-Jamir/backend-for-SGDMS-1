@@ -10,17 +10,19 @@ router.get("/", (req, res) => {
       fillLevel: esp1Readings,
     });
   } else {
-    res.json({message: "there are currently no data being sent from the Arduino"})
+    res.json({
+      message: "there are currently no data being sent from the Arduino",
+    });
   }
 });
 
 // POST endpoint to send messages
-router.post("/", (req, res) => {  
+router.post("/", (req, res) => {
   // Handle POST request to /esp1
   const { id } = req.body;
   const { message } = req.body;
   console.log("From esp 1 :", message, id);
-  res.json({ status: "From esp1 recieved!"});
+  res.json({ status: "From esp1 recieved!" });
 });
 
 module.exports = router;
