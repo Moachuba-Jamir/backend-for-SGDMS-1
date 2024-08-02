@@ -11,10 +11,9 @@ router.get("/", (req, res) => {
   db = getDB();
 
   connectToDb((err) => {
-
+    
   })
     
 })
-
 
 module.exports = router;

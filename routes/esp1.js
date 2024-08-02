@@ -24,7 +24,7 @@ router.post("/", (req, res) => {
     console.log(`New ESP added: ${id}`);
   }
   // Handle POST request to /admin Route
-  res.json({ status: "recieved by the admin" });
+  res.json({ status: "recieved by the esp1" });
 });
 
 
