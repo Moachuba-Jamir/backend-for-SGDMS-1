@@ -17,7 +17,7 @@ router.post("/", (req, res) => {
           espData[id].shift(); // Remove the oldest reading
         }
   } else {
-    // Add a new ID with the message
+    // Add a new ID with the message-
     espData[id] = [message]; // Initialize with an array containing the first message
     console.log(`New ESP added: ${id}`);
   }
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
   // Handle GET request to /messages
-  res.json(espData);
+  res.status(200).json(espData);
 });
 
 module.exports = router;
