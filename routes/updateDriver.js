@@ -6,6 +6,10 @@ const { get } = require("http");
 var db;
 var drivers = [];
 
+router.get('/', (req, res) => {
+  res.status(200).json({message: "Update driver GET endpoint is working fine!"})
+})
+
 router.post("/", (req, res) => {
   const { driverId, name, number } = req.body;
   // after getting the values connect to the mongoDB
