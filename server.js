@@ -73,6 +73,7 @@ app.post('/', (req, res) => {
         // clearing the current array 
         // can be done for bins as well 
         drivers = [];
+        bins = [];
         // querying the database to get the list of bins
         db.collection("bins")
           .find()
