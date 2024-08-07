@@ -65,13 +65,9 @@ connectToDb((err) => {
 
 // send back the list of bins 
 app.get("/bins", (req, res) => {
-  res.status(200).json(bins);
+  res.status(200).json({bins, drivers});
 });
 
 app.get("/locations", (req, res) => {
   res.status(200).json(locations);
 });
-
-app.get('/drivers', (req, res) => {
-  res.status(200).json(drivers);
-})
