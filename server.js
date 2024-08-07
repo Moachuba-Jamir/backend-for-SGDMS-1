@@ -9,7 +9,6 @@ var db;
 
 // for storing bins data from mongo db
 var bins = [];
-var locations = [];
 var drivers = [];
 // Importing routes
 const msgRouter1 = require("./routes/esp1");
@@ -63,38 +62,45 @@ connectToDb((err) => {
   }
 });
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   const { isUpdated } = req.body;
   if (isUpdated) {
-    connectToDb((err) => {
-      if (!err) {
-        // the db instance for CRUD actions
-        db = getDB();
-        // clearing the current array 
-        // can be done for bins as well 
-        drivers = [];
-        bins = [];
-        // querying the database to get the list of bins
-        db.collection("bins")
-          .find()
-          .forEach((bin) => {
-            bins.push(bin);
-          })
-          .then(() => {
-            console.log(bins);
-          });
+    try {
+      await connectToDb((err) => {
+        if (!err) {
+          // clearing the current array
+          // can be done for bins as well
+          drivers = [];
+          bins = [];
+          // the db instance for CRUD actions
+          db = getDB();
 
-        db.collection("drivers")
-          .find()
-          .forEach((driver) => {
-            drivers.push(driver);
-          })
-          .then(() => {
-            console.log(drivers);
-          });
-      }
-    });
+          // querying the database to get the list of bins
+          db.collection("bins")
+            .find()
+            .forEach((bin) => {
+              bins.push(bin);
+            })
+            .then(() => {
+              console.log(bins);
+            });
+
+          db.collection("drivers")
+            .find()
+            .forEach((driver) => {
+              drivers.push(driver);
+            })
+            .then(() => {
+              console.log(drivers);
+            });
+        }
+      });
+    } catch (err) {
+      console.error("Error updating data:", err);
+      res.status(500).json({ error: "Error updating data" });
+    } 
   }
+  res.status(200).json({ bins, drivers } );
 })
 // send back the list of bins 
 app.get("/bins", (req, res) => {
