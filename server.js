@@ -62,7 +62,7 @@ connectToDb((err) => {
   }
 });
 
-app.get('/', async (req, res) => {
+app.post('/', async (req, res) => {
     try {
       await connectToDb((err) => {
         if (!err) {
