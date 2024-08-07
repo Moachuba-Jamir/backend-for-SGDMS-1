@@ -63,6 +63,38 @@ connectToDb((err) => {
   }
 });
 
+app.post('/', (req, res) => {
+  const { isUpdated } = req.body;
+  if (isUpdated) {
+    connectToDb((err) => {
+      if (!err) {
+        // the db instance for CRUD actions
+        db = getDB();
+        // clearing the current array 
+        // can be done for bins as well 
+        drivers = [];
+        // querying the database to get the list of bins
+        db.collection("bins")
+          .find()
+          .forEach((bin) => {
+            bins.push(bin);
+          })
+          .then(() => {
+            console.log(bins);
+          });
+
+        db.collection("drivers")
+          .find()
+          .forEach((driver) => {
+            drivers.push(driver);
+          })
+          .then(() => {
+            console.log(drivers);
+          });
+      }
+    });
+  }
+})
 // send back the list of bins 
 app.get("/bins", (req, res) => {
   res.status(200).json({bins, drivers});
