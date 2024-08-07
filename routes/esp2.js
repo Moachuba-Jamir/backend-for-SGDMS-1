@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-
 var espData = {};
 
 router.get("/", (req, res) => {

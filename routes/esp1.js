@@ -8,7 +8,7 @@ res.status(200).json(espData)
 });
 
 router.post("/", (req, res) => {
-  const { id, message } = req.body;
+  const { id = "binId", message = "BinReadings" } = req.body;
   // check if the Id already exists
 
   if (espData[id]) {
