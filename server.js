@@ -62,9 +62,7 @@ connectToDb((err) => {
   }
 });
 
-app.post('/', async (req, res) => {
-  const { isUpdated } = req.body;
-  if (isUpdated) {
+app.get('/', async (req, res) => {
     try {
       await connectToDb((err) => {
         if (!err) {
@@ -99,7 +97,6 @@ app.post('/', async (req, res) => {
       console.error("Error updating data:", err);
       res.status(500).json({ error: "Error updating data" });
     } 
-  }
   res.status(200).json({ bins, drivers } );
 })
 // send back the list of bins 
