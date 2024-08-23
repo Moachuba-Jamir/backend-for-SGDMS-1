@@ -4,20 +4,14 @@ const router = express.Router();
 var espData = {};
 
 router.get("/", (req, res) => {
-  // Handle GET request to /messages
-  // if (esp1Readings) {
-  //   res.json({
-  //     Binid: "01",
-  //     fillLevel: esp1Readings,
-  //   });
-  // } else {
-  //   res.json({
-  //     message: "there are currently no data being sent from the Arduino",
-  //   });
-  // }
-   res
-     .status(200)
-     .json(espData);
+  // Check if espData is empty or not
+  if (Object.keys(espData).length === 0) {
+    // If espData is empty, send 20
+    res.status(200).json({ message: 40 });
+  } else {
+    // If espData has readings, send the data
+    res.status(200).json(espData);
+  }
 });
 
 // POST endpoint to send messages
