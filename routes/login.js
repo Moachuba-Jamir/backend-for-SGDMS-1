@@ -37,7 +37,7 @@ router.post("/", (req, res) => {
     res.status(200).json({ authenticatedDriver });
   } else {
     res.status(404).json({ message: "Error: Driver does not exist!" });
-  }
+  }  
 });
 
 router.get("/", (req, res) => {

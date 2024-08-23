@@ -16,6 +16,10 @@ const msgRouter2 = require("./routes/esp2");
 const adminRouter = require("./routes/adminRoute");
 const updateDriver = require("./routes/updateDriver");
 const login = require("./routes/login");
+const esp3 = require("./routes/esp3.js");
+const esp4 = require("./routes/esp4.js");
+const esp5 = require("./routes/esp5.js");
+
 // const drivers = require("./routes/drivers.js");
 
 //default end point
@@ -30,6 +34,9 @@ app.use(cors());
 // routes
 app.use("/esp1", msgRouter1);
 app.use("/esp2", msgRouter2);
+app.use("/esp3", esp3);
+app.use("/esp4", esp4);
+app.use("/esp5", esp5);
 app.use("/adminRoute", adminRouter);
 app.use("/updateDriver", updateDriver);
 app.use("/login", login);
