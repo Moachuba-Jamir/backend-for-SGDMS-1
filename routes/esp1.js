@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   // Check if espData is empty or not
   if (Object.keys(espData).length === 0) {
     // If espData is empty, send 20
-    res.status(200).json({message: 70});
+    res.status(200).json({message: 99});
   } else {
     // If espData has readings, send the data
     res.status(200).json(espData);
