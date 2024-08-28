@@ -1,66 +1,52 @@
+//
+
 const express = require("express");
 const router = express.Router();
 const { getDB, connectToDb } = require("../db.js");
-const { connect } = require("./adminRoute");
 
-var drivers = [];
-var uniqueDrivers = [];
+let db;
 
-var myDrivers = [];
-var myUniqueDrivers = [];
-router.post("/", (req, res) => {
-  const { username, password } = req.body;
-
-  connectToDb((err) => {
-    if (!err) {
+// Middleware to ensure database connection
+router.use((req, res, next) => {
+  if (!db) {
+    connectToDb((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Database connection error" });
+      }
       db = getDB();
-      db.collection("drivers")
-        .find()
-        .toArray()
-        .then((driverList) => {
-          drivers.push(...driverList);
-        });
-      uniqueDrivers = drivers.filter(
-        (value, index, self) =>
-          index === self.findIndex((t) => t.id === value.id)
-      );
-
-      console.log(`log in drivers ${uniqueDrivers.length}`);
-    }
-  });
-  // Check if the driver exists in the array
-  const authenticatedDriver = uniqueDrivers.find(
-    (driver) => username === driver.driverName && password === driver.pwd
-  );
-
-  if (authenticatedDriver) {
-    res.status(200).json({ authenticatedDriver });
+      next();
+    });
   } else {
-    res.status(404).json({ message: "Error: Driver does not exist!" });
-  }  
+    next();
+  }
 });
 
-router.get("/", (req, res) => {
-  // Check if the driver exists in the array
-    connectToDb((err) => {
-      if (!err) {
-        db = getDB();
-        db.collection("drivers")
-          .find()
-          .toArray()
-          .then((driverList) => {
-                myDrivers.push(...driverList);
-       
-          });
-           myUniqueDrivers = myDrivers.filter(
-             (value, index, self) =>
-               index === self.findIndex((t) => t.id === value.id)
-           );
-      }
-    });
+router.post("/", async (req, res) => {
+  const { username, password } = req.body;
 
-    // send response back to the client 
-    res.status(200).json(myUniqueDrivers)
+  try {
+    const driver = await db
+      .collection("drivers")
+      .findOne({ driverName: username, pwd: password });
+
+    if (driver) {
+
+      res.status(200).json({ authenticatedDriver: driver });
+    } else {
+      res.status(404).json({ message: "Error: Driver does not exist!" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const drivers = await db.collection("drivers").find().toArray();
+    res.status(200).json(drivers);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 module.exports = router;
