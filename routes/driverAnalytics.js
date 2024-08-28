@@ -24,6 +24,16 @@ router.post("/", (req, res) => {
             { id: userId },
             { $inc: { [`analytics.2024.${monthIndex}`]: 1 } }
           );
+        // Update the document
+        await db.collection("bins").findOneAndUpdate(
+          {
+            entity: "Dimapur Municipal Council",
+            "myBins.id": binId,
+          },
+          {
+            $inc: { "myBins.$.binCleared": 1 },
+          }
+        );
 
         // Fetch the updated document
         const updatedDriver = await db
@@ -45,9 +55,8 @@ router.post("/", (req, res) => {
   });
 });
 
-
 router.get("/", (req, res) => {
-    const { userName } = req.query;
+  const { userName } = req.query;
   connectToDb((err) => {
     if (err) {
       console.error("Database connection error:", err);
