@@ -76,48 +76,30 @@ connectToDb((err) => {
 
 app.post("/", async (req, res) => {
   try {
-    await connectToDb((err) => {
-      if (!err) {
-        // clearing the current array
-        // can be done for bins as well
-        drivers.length = 0;
-        bins.length = 0;
-        drivers = [];
-        bins = [];
+    await connectToDb();
+    const db = getDB();
 
-        // the db instance for CRUD actions
-        db = getDB();
+    // Clear the current arrays
+    drivers.length = 0;
+    bins.length = 0;
 
-        drivers.length = 0;
-        bins.length = 0;
-        drivers = [];
-        bins = [];
-        // querying the database to get the list of bins
-        db.collection("bins")
-          .find()
-          .forEach((bin) => {
-            bins.push(bin);
-          })
-          .then(() => {
-            console.log(bins);
-          });
+    // Query the database to get the list of bins
+    const binsResult = await db.collection("bins").find().toArray();
+    bins.push(...binsResult);
 
-        db.collection("drivers")
-          .find()
-          .forEach((driver) => {
-            drivers.push(driver);
-          })
-          .then(() => {
-            console.log(drivers);
-          });
-      }
-    });
+    // Query the database to get the list of drivers
+    const driversResult = await db.collection("drivers").find().toArray();
+    drivers.push(...driversResult);
+
+    console.log("Data fetched successfully");
+    console.log("Drivers:", drivers);
+
+    res.status(200).json({ bins, drivers });
   } catch (err) {
     console.error("Error updating data:", err);
     res.status(500).json({ error: "Error updating data" });
-  } 
-  
-  res.status(200).json({ bins, drivers });
+  }
+
 });
 // send back the list of bins
 app.get("/bins", (req, res) => {
