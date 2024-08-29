@@ -1,10 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { getDB, connectToDb } = require("../db.js");
-const { get } = require("http");
-
-var db;
-var drivers = [];
 
 router.get("/", (req, res) => {
   res
@@ -12,46 +8,44 @@ router.get("/", (req, res) => {
     .json({ message: "Update driver GET endpoint is working fine!" });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const { driverId, name, number } = req.body;
 
-  // after getting the values connect to the mongoDB
-  console.log(`${driverId},  ${name} ,  ${number}}`);
+  // Validate the input
+  if (!driverId || !name || !number) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
 
-  connectToDb((err) => {
-    if (!err) {
-      console.log("Connected to db from the updateDriver endpoint");
-      db = getDB();
-      db.collection("drivers")
-        .find()
-        .forEach((driver) => {
-          // check if the driverId matches the id in the driver
-          drivers.push(driver);
-          if (driverId == driver._id) {
-            var nameAndNum = { $set: { driverName: name, Phone: number } };
-            db.collection("drivers").updateOne(
-              {id: driverId},
-              nameAndNum,
-              function (err, res) {
-                if (err) {
-                  throw err;
-                } else {
-                  console.log("1 document updated!");
-                  db.close();
-                }
-              }
-            );
-            // update the driver name and phone no here.
-          }
-        })
-        .then(() => {
-          console.log(drivers);
-        });
+  try {
+    // Connect to the database
+    const db = await new Promise((resolve, reject) => {
+      connectToDb((err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(getDB());
+        }
+      });
+    });
+
+    // Perform the update operation
+    const result = await db.collection("drivers").updateOne(
+      { _id: driverId }, // Assuming driverId is the _id here
+      { $set: { driverName: name, Phone: number } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res
+        .status(404)
+        .json({ message: "Driver not found or no changes made" });
     }
-  });
-  res.status(200).json({
-    messge: "Name and phone number recived! ",
-  });
+
+    console.log("1 document updated!");
+    res.status(200).json({ message: "Driver updated successfully!" });
+  } catch (err) {
+    console.error("Error updating driver:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 module.exports = router;

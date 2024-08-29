@@ -8,7 +8,7 @@ module.exports = {
     MongoClient.connect(process.env.URI)
       .then((client) => {
         dbConnection = client.db("sgdms");
-        console.log("Successfully connected to mongo db server" + client);
+        console.log("Successfully connected to mongo db server" + JSON.stringify(client, null, 2));
         // function to fire after database connection
         return cb();
       })
