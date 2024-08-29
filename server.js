@@ -64,7 +64,7 @@ connectToDb((err) => {
       });
 
     db.collection("drivers")
-      .find()
+      .find().sort({id: 1})
       .forEach((driver) => {
         drivers.push(driver);
       })
