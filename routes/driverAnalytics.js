@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { getDB, connectToDb } = require("../db.js");
 const currentYear = new Date().getFullYear();
+
+
+
+
 router.post("/", (req, res) => {
   const { userId, monthIndex } = req.body;
   console.log(`from the front end app: ${userId} and ${monthIndex}`);
