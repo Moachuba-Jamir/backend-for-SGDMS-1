@@ -49,13 +49,15 @@ router.post("/", (req, res) => {
               );
               // update the driver name and phone no here.
             }
+
+            const updatedDriver = db.collection('drivers').find().toArray();
           })
           .then(() => {
             console.log(drivers);
           });
 
         res.status(200).json({
-          messge: "Name and phone number recived! ",
+        updatedDriver,
         });
       } catch (err) {
         console.log("Error ", err);
