@@ -5,7 +5,7 @@ const { get } = require("http");
 
 var db;
 var drivers = [];
-
+var updatedDriver = [];
 router.get("/", (req, res) => {
   res
     .status(200)
@@ -49,12 +49,12 @@ router.post("/", (req, res) => {
               );
               // update the driver name and phone no here.
             }
-
-            const updatedDriver = db.collection('drivers').find().toArray();
           })
           .then(() => {
             console.log(drivers);
           });
+        
+        updatedDriver = await db.collection("drivers").find().toArray();
 
         res.status(200).json({
         updatedDriver,
