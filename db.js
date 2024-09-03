@@ -14,7 +14,6 @@ module.exports = {
       })
       .catch((err) => {
         console.warn(`Error connecting to the database: ${err}`);
-        return cb(err);
       });
   },
 
