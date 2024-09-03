@@ -37,15 +37,15 @@ router.post("/", (req, res) => {
                 nameAndNum,
                 {
                   returnDocument: "after",
-                },
-                function (err, res) {
-                  if (err) {
-                    throw err;
-                  } else {
-                    console.log("1 document updated!");
-                    db.close();
-                  }
                 }
+                // function (err, res) {
+                //   if (err) {
+                //     throw err;
+                //   } else {
+                //     console.log("1 document updated!");
+                //     db.close();
+                //   }
+                // }
               );
               // update the driver name and phone no here.
             }
