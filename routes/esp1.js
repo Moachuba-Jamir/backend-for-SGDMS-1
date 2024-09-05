@@ -3,14 +3,15 @@ const router = express.Router();
 
 var espData = {};
 router.get("/", (req, res) => {
-  // Check if espData is empty or not
-  if (Object.keys(espData).length === 0) {
-    // If espData is empty, send 20
+  // // Check if espData is empty or not
+  // if (Object.keys(espData).length === 0) {
+  //   // If espData is empty, send 20
+  //   res.status(200).json({message: 99});
+  // } else {
+  //   // If espData has readings, send the data
+  //   res.status(200).json(espData);
+  // }
     res.status(200).json({message: 99});
-  } else {
-    // If espData has readings, send the data
-    res.status(200).json(espData);
-  }
 });
 router.post("/", (req, res) => {
   const { id = "binId", message = "BinReadings" } = req.body;

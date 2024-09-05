@@ -20,6 +20,7 @@ const esp3 = require("./routes/esp3.js");
 const esp4 = require("./routes/esp4.js");
 const esp5 = require("./routes/esp5.js");
 const driverAnalytics = require('./routes/driverAnalytics.js');
+const dashboardLogin = require('./routes/dashboardLogin.js');
 
 // const drivers = require("./routes/drivers.js");
 
@@ -42,6 +43,7 @@ app.use("/adminRoute", adminRouter);
 app.use("/updateDriver", updateDriver);
 app.use("/login", login);
 app.use("/driverAnalytics", driverAnalytics);
+app.use("/dashAdmin", dashboardLogin);
 // app.use('/drivers', drivers);
 // the bins endpoint for the dash board
 
