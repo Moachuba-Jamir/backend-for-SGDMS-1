@@ -14,8 +14,8 @@ router.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: true, //ensures the cookie cannot be accessed via Javascript
-      secure: false,
-      // secure: process.even.NODE_ENV === 'production';
+      secure: true,
+      // secure: process.even.NODE_ENV === 'production',
       maxAge: 60 * 60 * 1000,
     },
   })
