@@ -19,8 +19,9 @@ const login = require("./routes/login");
 const esp3 = require("./routes/esp3.js");
 const esp4 = require("./routes/esp4.js");
 const esp5 = require("./routes/esp5.js");
-const driverAnalytics = require('./routes/driverAnalytics.js');
-const dashboardLogin = require('./routes/dashboardLogin.js');
+const driverAnalytics = require("./routes/driverAnalytics.js");
+const dashboardLogin = require("./routes/dashboardLogin.js");
+const totalBinCleared = require("./routes/totalbins.js");
 
 // const drivers = require("./routes/drivers.js");
 
@@ -44,6 +45,7 @@ app.use("/updateDriver", updateDriver);
 app.use("/login", login);
 app.use("/driverAnalytics", driverAnalytics);
 app.use("/dashAdmin", dashboardLogin);
+app.use("/totalBins", totalBinCleared);
 // app.use('/drivers', drivers);
 // the bins endpoint for the dash board
 
@@ -66,7 +68,8 @@ connectToDb((err) => {
       });
 
     db.collection("drivers")
-      .find().sort({id: 1})
+      .find()
+      .sort({ id: 1 })
       .forEach((driver) => {
         drivers.push(driver);
       })
@@ -101,7 +104,6 @@ app.post("/", async (req, res) => {
     console.error("Error updating data:", err);
     res.status(500).json({ error: "Error updating data" });
   }
-
 });
 // send back the list of bins
 app.get("/bins", (req, res) => {
