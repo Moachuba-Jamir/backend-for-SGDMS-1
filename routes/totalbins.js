@@ -30,7 +30,9 @@ router.post("/", async (req, res) => {
       }
     );
 
-    res.status(200).json({ message: "Total bins has been updated!" });
+    const bins = await db.collection("bins").find().toArray();
+
+    res.status(200).json({ bins });
   } catch (err) {
     console.log("Could not update the overall bin clear value", err);
   }
