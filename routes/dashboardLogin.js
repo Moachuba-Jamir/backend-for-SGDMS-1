@@ -7,6 +7,7 @@ require("dotenv").config();
 
 router.use(cookieParser());
 
+
 router.use(
   session({
     secret: process.env.SECRET_KEY,
@@ -14,10 +15,10 @@ router.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: true, //ensures the cookie cannot be accessed via Javascript
-      secure: true,
-      // secure: process.even.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 1000,
     },
+    proxy: true,
   })
 );
 
