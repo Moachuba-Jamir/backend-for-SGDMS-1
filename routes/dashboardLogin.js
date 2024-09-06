@@ -1,9 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const { getDB, connectToDb } = require("../db.js");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
+
+router.use(cookieParser());
+
+router.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true, //ensures the cookie cannot be accessed via Javascript
+      secure: false,
+      // secure: process.even.NODE_ENV === 'production';
+      maxAge: 60 * 60 * 1000,
+    },
+  })
+);
 
 let db;
-var isLoggedIn = false;
+var isLoggedOut = true;
 // Middleware to ensure database connection
 router.use((req, res, next) => {
   if (!db) {
@@ -21,20 +40,19 @@ router.use((req, res, next) => {
 
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
-  console.log(`from admin login : ${username} and ${password}`);
+  // console.log(`from ad
+  try {
+    //   since there is only one document in the collection
+    const admin = await db.collection("admin").findOne({});
 
-    try {
-    //   since there is only one document in the collection 
-      const admin = await db.collection("admin").findOne({});
-     
     if (admin) {
       if (admin.user == username && admin.password == password) {
-          console.log("Admin logged in successfully");
-          isLoggedIn = true;
-          res.status(200).json({ isLoggedIn });
+        req.session.isAdmin = true;
+        isLoggedOut = false;
+        console.log("Admin logged in successfully");
+        res.status(200).json({ success: true });
       } else {
-        isLoggedIn = false;
-        res.status(404).json({ isLoggedIn });
+        res.status(404).json({ success: false });
       }
     }
   } catch (error) {
@@ -42,17 +60,25 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-    const logout = req.query.logout;
-    try {
-        if (logout == true) {
-            isLoggedIn = false;
-             res.status(200).json({ isLoggedIn });
-        } else {
-            res.status(200).json({ isLoggedIn });
-      }
-  } catch (error) {
-    res.status(500).json({ message: "Server error : Admin not found " });
+router.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Error logging out" });
+    }
+    res.clearCookie("connect.sid"); // Clear the session cookie
+    console.log("admin logged out");
+    isLoggedOut = true;
+    res.json({ logout: true });
+  });
+});
+
+// Check if logged out route
+router.get("/checkLogout", (req, res) => {
+  if (!req.session.isAdmin) {
+    // If the session doesn't exist or is not an admin
+    res.json({ logout: true, isLoggedOut });
+  } else {
+    res.json({ logout : false});
   }
 });
 
