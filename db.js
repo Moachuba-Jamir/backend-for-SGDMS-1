@@ -32,7 +32,7 @@ let dbConnection;
 
 module.exports = {
   connectToDb: (cb) => {
-    MongoClient.connect(process.env.URI)
+    MongoClient.connect(process.env.MONGODB_URI)
       .then((client) => {
         dbConnection = client.db("sgdms");
         console.log("Successfully connected to mongo db server");

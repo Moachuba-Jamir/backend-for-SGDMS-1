@@ -9,7 +9,7 @@ router.use(cookieParser());
 
 router.use(
   session({
-    secret: process.env.SECRET,
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: {
