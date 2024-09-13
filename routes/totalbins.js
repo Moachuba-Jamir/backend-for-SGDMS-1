@@ -20,13 +20,14 @@ router.use((req, res, next) => {
 
 router.post("/", async (req, res) => {
   const { totalBins } = req.body;
+  var total = parseInt(totalBins);
   try {
     await db.collection("bins").findOneAndUpdate(
       {
         entity: "Dimapur Municipal Council",
       },
       {
-        $set: { totalBinCleared: totalBins },
+        $set: { totalBinCleared: total },
       }
     );
 

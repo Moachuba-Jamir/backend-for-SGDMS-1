@@ -3,9 +3,6 @@ const router = express.Router();
 const { getDB, connectToDb } = require("../db.js");
 const currentYear = new Date().getFullYear();
 
-
-
-
 router.post("/", (req, res) => {
   const { userId, monthIndex } = req.body;
   console.log(`from the front end app: ${userId} and ${monthIndex}`);
@@ -21,15 +18,14 @@ router.post("/", (req, res) => {
     // Using async/await inside the callback
     (async () => {
       try {
-
         // Update the document
         await db
           .collection("drivers")
           .findOneAndUpdate(
             { id: userId },
             { $inc: { [`analytics.2024.${monthIndex}`]: 1 } }
-        );
-        
+          );
+
         // Update the document
         await db.collection("bins").findOneAndUpdate(
           {
@@ -47,14 +43,13 @@ router.post("/", (req, res) => {
         const updatedDriver = await db
           .collection("drivers")
           .findOne({ id: userId });
-              const updatedBin = await db.collection("bins").findOne({
-                entity: "Dimapur Municipal Council",
-                "myBins.id": userId,
-              });
-        
+        const updatedBin = await db.collection("bins").findOne({
+          entity: "Dimapur Municipal Council",
+          "myBins.id": userId,
+        });
+
         if (updatedDriver) {
-       
-          res.status(200).json({updatedDriver, updatedBin});
+          res.status(200).json({ updatedDriver, updatedBin });
         } else {
           res.status(404).json({ message: "Driver not found" });
         }
@@ -85,17 +80,17 @@ router.get("/", (req, res) => {
         const updatedDriver = await db
           .collection("drivers")
           .findOne({ driverName: userName });
-        
-        
-          const updatedBin =  await db.collection("bins").find(
-             {
-               entity: "Dimapur Municipal Council",
-               "myBins.id": updatedDriver.id,
-             }
-           ).toArray();
+
+        const updatedBin = await db
+          .collection("bins")
+          .find({
+            entity: "Dimapur Municipal Council",
+            "myBins.id": updatedDriver.id,
+          })
+          .toArray();
 
         if (updatedDriver) {
-          res.status(200).json({updatedDriver, updatedBin});
+          res.status(200).json({ updatedDriver, updatedBin });
         } else {
           res.status(404).json({ message: "Driver not found" });
         }
